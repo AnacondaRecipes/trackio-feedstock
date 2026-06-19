@@ -6,22 +6,21 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/gradio-app/trackio/archive/refs/tags/trackio@{{ version }}.tar.gz
-  sha256: 4ef386d2806cd1c2797d1b944b8e725a9d871a51e99622699a4fabc0df2177cb
+  # trackio publishes only a wheel on PyPI (no sdist). Building from the GitHub
+  # source requires `npm ci` to compile the Svelte frontend, which is infeasible
+  # in the network-isolated build env. We repack the official py3-none-any wheel
+  # (pure Python + prebuilt frontend).
+  url: https://files.pythonhosted.org/packages/55/a1/af5437b3c3f04a0de85f6af2fb43db69c03cdebcea0330356e13724c2c3a/trackio-{{ version }}-py3-none-any.whl
+  sha256: 2cb14d766d4798430e89d77c47b9e96af56062294ab9dcc555f5b42331aceba3
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  entry_points:
-    - trackio = trackio.cli:main
+  script: {{ PYTHON }} -m pip install trackio-{{ version }}-py3-none-any.whl --no-deps -vv
 
 requirements:
   host:
     - python
     - pip
-    - hatchling
-    # builds the (Svelte) frontend assets from source
-    - nodejs
   run:
     - python
     - huggingface_hub <2.0.0
