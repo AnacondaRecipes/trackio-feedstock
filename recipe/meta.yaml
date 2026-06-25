@@ -6,10 +6,11 @@ package:
   version: {{ version }}
 
 source:
-  # trackio publishes only a wheel on PyPI (no sdist). Building from the GitHub
-  # source requires `npm ci` to compile the Svelte frontend, which is infeasible
-  # in the network-isolated build env. We repack the official py3-none-any wheel
-  # (pure Python + prebuilt frontend).
+  # trackio stopped publishing PyPI sdists at 0.20.0 (last sdist: 0.5.1), so the
+  # gradio pattern (build from the sdist, which bundles the prebuilt frontend) is
+  # not available. The GitHub archive needs `npm ci` to compile the Svelte
+  # frontend, which fails in the network-isolated PBP builder. So we repack the
+  # official py3-none-any wheel (pure Python + prebuilt frontend).
   url: https://files.pythonhosted.org/packages/55/a1/af5437b3c3f04a0de85f6af2fb43db69c03cdebcea0330356e13724c2c3a/trackio-{{ version }}-py3-none-any.whl
   sha256: 2cb14d766d4798430e89d77c47b9e96af56062294ab9dcc555f5b42331aceba3
 
@@ -27,13 +28,13 @@ requirements:
     - gradio-client >=2.0.0,<3.0.0
     - starlette <2.0.0
     - python-multipart >=0.0.9,<1.0.0
-    - uvicorn >=0.30.0,<1.0.0
+    # upstream declares uvicorn[standard]; uvicorn-standard is the conda form
+    # (pulls websockets etc., not provided transitively by gradio-client/starlette)
+    - uvicorn-standard >=0.30.0,<1.0.0
     - numpy <3.0.0
     - pillow <13.0.0
     - orjson >=3.0,<4.0.0
     - tomli >=2.0.0  # [py<311]
-    # audioop was removed from the stdlib in 3.13; backport only needed there
-    - audioop-lts  # [py>=313]
   run_constrained:
     - tbparse ==0.0.9
     - tensorboardx >=2.0.0,<3.0.0
