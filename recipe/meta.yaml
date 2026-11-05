@@ -1,5 +1,5 @@
 {% set name = "trackio" %}
-{% set version = "0.27.0" %}
+{% set version = "0.40.0" %}
 
 package:
   name: {{ name|lower }}
@@ -11,8 +11,8 @@ source:
   # not available. The GitHub archive needs `npm ci` to compile the Svelte
   # frontend, which fails in the network-isolated PBP builder. So we repack the
   # official py3-none-any wheel (pure Python + prebuilt frontend).
-  url: https://files.pythonhosted.org/packages/55/a1/af5437b3c3f04a0de85f6af2fb43db69c03cdebcea0330356e13724c2c3a/trackio-{{ version }}-py3-none-any.whl
-  sha256: 2cb14d766d4798430e89d77c47b9e96af56062294ab9dcc555f5b42331aceba3
+  url: https://files.pythonhosted.org/packages/8f/60/69c8baac61bab8be099d54bc227cc5db845f7f2deaa69a3105e45fbca8c5/trackio-{{ version }}-py3-none-any.whl
+  sha256: d3815222da697432cd4232f254b5b2b60aaa1e5b87bfff8f41101807b3fe7bc1
 
 build:
   number: 0
@@ -22,6 +22,7 @@ requirements:
   host:
     - python
     - pip
+    - hatchling >=1.27
   run:
     - python
     - huggingface_hub >=1.10.0,<2.0.0
@@ -34,6 +35,7 @@ requirements:
     - numpy <3.0.0
     - pillow <13.0.0
     - orjson >=3.0,<4.0.0
+    - brotli-python >=1.0.0,<2.0.0
     - tomli >=2.0.0  # [py<311]
   run_constrained:
     - tbparse ==0.0.9
