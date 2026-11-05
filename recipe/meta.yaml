@@ -22,7 +22,7 @@ requirements:
   host:
     - python
     - pip
-    - hatchling>=1.27
+    - hatchling >=1.27
   run:
     - python
     - huggingface_hub >=1.10.0,<2.0.0
